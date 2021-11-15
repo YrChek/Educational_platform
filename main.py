@@ -66,7 +66,8 @@ class Student:
             print(f'Средний балл за домашние работы у студента {self.full_name} выше, чем у студента '
                   f'{student.full_name}')
         elif self.averaging() < student.averaging():
-            print(f'Средний балл за домашние работы у студента {student.full_name} выше, чем у {self.full_name}')
+            print(f'Средний балл за домашние работы у студента {student.full_name} выше, чем у студента '
+                  f'{self.full_name}')
         else:
             print(f'У студента {self.full_name} и студента {student.full_name} одинаковый средний балл за домашние'
                   f' работы')
@@ -156,36 +157,34 @@ class Reviewer(Mentor):
         return res
 
 
-def grade_in_course(*my_list):
+def grade_in_course(list_student, course):
     """Функция подсчета средней оценки за домашние работы"""
     summa = 0
     length = 0
-    for i in my_list:
-        if i in Student.list_grades:
-            if my_list[-1] in Student.list_grades[i]:
-                summa += sum(Student.list_grades[i][my_list[-1]])/len(Student.list_grades[i][my_list[-1]])
-                length += 1
+    for i in list_student:
+        if course in Student.list_grades[i]:
+            summa += sum(Student.list_grades[i][course])/len(Student.list_grades[i][course])
+            length += 1
     if length != 0:
         res = round(summa/length, 1)
     else:
         res = 0
-    print(f'Средний балл всех студентов за домашние задания по курсу {my_list[-1]} равен {res}')
+    print(f'Средний балл всех студентов за домашние задания по курсу {course} равен {res}')
 
 
-def grade_in_lecture(*my_list):
+def grade_in_lecture(list_lecturer, course):
     """Функция подсчета средней оценки за лекции"""
     summa = 0
     length = 0
-    for i in my_list:
-        if i in Mentor.list_grades:
-            if my_list[-1] in Mentor.list_grades[i]:
-                summa += sum(Mentor.list_grades[i][my_list[-1]])/len(Mentor.list_grades[i][my_list[-1]])
-                length += 1
+    for i in list_lecturer:
+        if course in Mentor.list_grades[i]:
+            summa += sum(Mentor.list_grades[i][course])/len(Mentor.list_grades[i][course])
+            length += 1
     if length != 0:
         res = round(summa/length, 1)
     else:
         res = 0
-    print(f'Средний балл всех лекторов за лекции по курсу {my_list[-1]} равен {res}')
+    print(f'Средний балл всех лекторов за лекции по курсу {course} равен {res}')
 
 
 student_1 = Student('Пупкин', 'Василий', 'Алибабаевич')
@@ -208,16 +207,16 @@ reviewer_1.add_grades(student_1, 'Python', 7)
 reviewer_2.add_grades(student_2, 'Git', 10)
 reviewer_2.add_grades(student_2, 'Python', 9)
 
-student_1.add_grades(lecturer_1, 'Git', 9)
-student_1.add_grades(lecturer_1, 'Python', 10)
-student_2.add_grades(lecturer_2, 'Git', 10)
-student_2.add_grades(lecturer_2, 'Python', 9)
+student_1.add_grades(lecturer_1, 'Git', 10)
+student_1.add_grades(lecturer_1, 'Python', 9)
+student_2.add_grades(lecturer_2, 'Git', 9)
+student_2.add_grades(lecturer_2, 'Python', 10)
 
 student_1.comparison(student_2)
 lecturer_1.comparison(lecturer_2)
 
-grade_in_course('Пупкин Василий Алибабаевич', 'Климова Маруся Прокофьевна', 'Git')
-grade_in_lecture('Козьма Прутков', 'Васса Железнова', 'Git')
+grade_in_course(list(Student.list_grades), 'Python')
+grade_in_lecture(list(Lecturer.list_grades), 'Git')
 
 print(student_1)
 print(student_2)
